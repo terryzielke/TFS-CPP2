@@ -1,10 +1,12 @@
+using System;
+using System.Linq.Expressions;
+using UnityEditor;
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-
+    public static bool IsInitialized => _instance != null;
     protected static T _instance;
-
     public static T Instance
     {
         get
@@ -13,10 +15,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             {
                 _instance = FindAnyObjectByType<T>();
                 if (_instance == null)
-                {
-                    GameObject singletonObject = new GameObject();
-                    _instance = singletonObject.AddComponent<T>();
-                }
+                    throw new InvalidOperationException($"No instance of singleton {typeof(T).Name} found in the scene. Make sure to add one to the scene.");
+
             }
             return _instance;
         }
@@ -24,7 +24,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (_instance == null)
+        if (_instance != null)
         {
             Debug.LogWarning($"Multiple instances of singleton {typeof(T).Name} detected. Destroying duplicate.");
             Destroy(gameObject);
@@ -32,12 +32,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
 
         _instance = this as T;
-
-        if (_instance != this)
+        if (_instance == null)
         {
-            Debug.LogWarning($"Multiple instances of singleton {typeof(T).Name} detected. Destroying duplicate.");
             Destroy(gameObject);
-            return;
+            throw new InvalidCastException($"Failed to cast {typeof(T).Name} to Singleton<{typeof(T).Name}>.");
         }
 
         DontDestroyOnLoad(gameObject);
