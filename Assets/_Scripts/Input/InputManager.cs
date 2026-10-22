@@ -21,6 +21,8 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
 
     private void OnDisable()
     {
+        if (input == null) return;
+
         input.Disable();
 
         input.Player.RemoveCallbacks(this);
