@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
 
     // Values filled by inputs
     private Vector2 movementInput;
+    private float strafeInput;
     private Vector2 lookInput;
     private Vector3 velocity;
     private bool jumpPressed = false;
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         InputManager.Instance.OnMoveEvent += OnMove;
         InputManager.Instance.OnJumpEvent += OnJump;
+        InputManager.Instance.OnStrafeEvent += OnStrafe;
     }
 
     private void OnDisable()
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
         {
             InputManager.Instance.OnMoveEvent -= OnMove;
             InputManager.Instance.OnJumpEvent -= OnJump;
+            InputManager.Instance.OnStrafeEvent -= OnStrafe;
         }
     }
 
@@ -81,6 +84,8 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(bool isPressed) => jumpPressed = isPressed;
 
+    void OnStrafe(float strafe) => strafeInput = strafe;
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -101,9 +106,11 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, movementInput.x * rotationSpeed * Time.fixedDeltaTime, 0);
 
         // W and S move player forward and backward along the direction they're facing
-        Vector3 forwardVelocity = transform.forward * movementInput.y * movementSpeed;
-        velocity.x = forwardVelocity.x;
-        velocity.z = forwardVelocity.z;
+        // Q and E strafe player left and right
+        Vector3 moveDirection = transform.forward * movementInput.y + transform.right * strafeInput;
+        Vector3 horizontalVelocity = Vector3.ClampMagnitude(moveDirection, 1f) * movementSpeed;
+        velocity.x = horizontalVelocity.x;
+        velocity.z = horizontalVelocity.z;
 
         if (cc.isGrounded)
         {

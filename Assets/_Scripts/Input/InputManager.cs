@@ -8,6 +8,7 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
 
     public Action<Vector2> OnMoveEvent;
     public Action<bool> OnJumpEvent;
+    public Action<float> OnStrafeEvent;
 
     private void OnEnable()
     {
@@ -42,6 +43,18 @@ public class InputManager : Singleton<InputManager>, InputSystem_Actions.IPlayer
         else if (context.canceled)
         {
             OnMoveEvent?.Invoke(Vector2.zero);
+        }
+    }
+
+    public void OnStrafe(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        if (context.started || context.performed)
+        {
+            OnStrafeEvent?.Invoke(context.ReadValue<float>());
+        }
+        else if (context.canceled)
+        {
+            OnStrafeEvent?.Invoke(0f);
         }
     }
 
