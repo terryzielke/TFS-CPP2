@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float rotationSpeed = 180f; // degrees per second
+    [SerializeField, Range(0f, 1f)] private float forwardThreshold = 0.2f; // stick y needed to count as moving while turning
     [Header("Jump Settings")]
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float timeToJumpApex = 0.4f;
@@ -92,7 +93,24 @@ public class PlayerController : MonoBehaviour
         initalJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
 
-    void OnMove(Vector2 move) => movementInput = move;
+    void OnMove(Vector2 move) => movementInput = ToTankInput(move);
+
+    // On a stick, turning means pushing sideways, which drains the forward value (a hard turn is only ~0.3 forward).
+    // Keyboard W+A keeps full forward while turning, so match that: x only turns, and any forward/back push
+    // moves at the stick's full push strength. Pushing purely sideways still turns in place.
+    Vector2 ToTankInput(Vector2 input)
+    {
+        // Keyboard diagonals come in as (1, 1), so cap the length to keep both devices in the same range
+        input = Vector2.ClampMagnitude(input, 1f);
+        float strength = input.magnitude;
+
+        float forward = Mathf.Abs(input.y) >= forwardThreshold ? Mathf.Sign(input.y) * strength : 0f;
+        // Stretch turn so a diagonal turns at full rate, like holding A or D
+        float turn = Mathf.Clamp(input.x * 1.4142f, -1f, 1f);
+
+        Vector2 output = new Vector2(turn, forward);
+        return output;
+    }
 
     void OnJump(bool isPressed) => jumpPressed = isPressed;
 
