@@ -121,10 +121,23 @@ public class PlayerController : MonoBehaviour
             {
                 velocity.y = initalJumpVelocity;
             }
+
+            // if player y position is greater than 102 throw exception
+            if (transform.position.y > 102f)
+            {
+                throw new MissingComponentException("Player y position is " + transform.position.y + ", higher than the default terrain. They have jumped onto an object.");
+            }
         }
         else
         {
             velocity.y += gravity * Time.fixedDeltaTime;
+        }
+
+
+        // if player y position is less than 90 throw exception
+        if (transform.position.y < 90f)
+        {
+            throw new MissingComponentException("Player y position is " + transform.position.y + ", lower than the default terrain. They have fallen off the terrain.");
         }
     }
 }
