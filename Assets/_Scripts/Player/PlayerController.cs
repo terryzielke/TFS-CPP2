@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float timeToJumpApex = 0.4f;
     [Header("Animation Settings")]
     [SerializeField] private float animationDampTime = 0.1f; // smooths blend tree changes
+    [Header("Character Model")]
+    [SerializeField] private GameObject characterModel; // leave empty to keep the model already in the prefab
+    [SerializeField] private RuntimeAnimatorController animatorController; // used on the spawned model
+    [SerializeField] private Vector3 modelOffset = new Vector3(0f, -1.08f, 0f); // drops feet to the bottom of the capsule
 
     // Calculated values
     private float gravity;
@@ -67,7 +71,34 @@ public class PlayerController : MonoBehaviour
         // Animator lives on the character model child; the player still works without one
         animator = GetComponentInChildren<Animator>();
 
+        if (characterModel != null) SpawnCharacterModel();
+
         CalculateJumpVars();
+    }
+
+    void SpawnCharacterModel()
+    {
+        // Reuse the old model's controller if none was assigned, then remove the old model
+        if (animator != null)
+        {
+            if (animatorController == null) animatorController = animator.runtimeAnimatorController;
+            Destroy(animator.gameObject);
+        }
+
+        GameObject model = Instantiate(characterModel, transform);
+        model.name = "Model";
+        model.transform.SetLocalPositionAndRotation(modelOffset, Quaternion.identity);
+
+        animator = model.GetComponent<Animator>();
+        if (animator == null) animator = model.AddComponent<Animator>();
+        animator.runtimeAnimatorController = animatorController;
+        animator.applyRootMotion = false; // CharacterController drives movement
+
+        // Our clips are Humanoid, so they only play on a model imported with a Humanoid avatar
+        if (animator.avatar == null || !animator.avatar.isHuman)
+        {
+            Debug.LogWarning(characterModel.name + " has no Humanoid avatar, so animations won't play. Select the model, open the Rig tab, set Animation Type to Humanoid and click Apply.");
+        }
     }
 
     private void OnValidate()
