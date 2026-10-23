@@ -453,30 +453,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1781983125828357419, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: field of view
-      value: 81
-      objectReference: {fileID: 0}
-    - target: {fileID: 1781983125828357419, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: m_FocalLength
-      value: 14.050195
-      objectReference: {fileID: 0}
-    - target: {fileID: 1781983125828357419, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: far clip plane
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 61.19221
@@ -516,10 +492,6 @@ PrefabInstance:
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5029025229859722702, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_Name

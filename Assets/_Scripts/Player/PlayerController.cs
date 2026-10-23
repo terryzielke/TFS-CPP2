@@ -149,12 +149,6 @@ public class PlayerController : MonoBehaviour
                 velocity.y = initalJumpVelocity;
                 if (animator != null) animator.SetTrigger(JumpHash);
             }
-
-            // if player y position is greater than 102 throw exception
-            if (transform.position.y > 102f)
-            {
-                throw new MissingComponentException("Player y position is " + transform.position.y + ", higher than the default terrain. They have jumped onto an object.");
-            }
         }
         else
         {

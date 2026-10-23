@@ -58,7 +58,11 @@ public class PlayerCharacterImporter : AssetPostprocessor
             // so the physics jump is the only thing lifting the player.
             clip.lockRootHeightY = loop;
             clip.keepOriginalPositionY = loop;
-            clip.heightFromFeet = loop;
+
+            // Measure height from the feet (not the center of mass). For the jump clips this pins the
+            // lowest foot to the bottom of the capsule, so crouching bends the legs instead of pushing
+            // the feet through the ground.
+            clip.heightFromFeet = true;
         }
         importer.clipAnimations = clips;
     }
@@ -73,6 +77,16 @@ public static class PlayerCharacterSetup
     private const string ControllerPath = CharacterFolder + "/PlayerAnimator.controller";
     private const string PrefabPath = "Assets/_Prefabs/Player.prefab";
     private const string ModelChildName = "Model";
+
+    // Change this and run the tool again to resize the player.
+    // 1 = X Bot's normal size (about 1.8m tall), 1.5 = 50% bigger, etc.
+    private const float ModelScale = 1f;
+
+    // Collider size at ModelScale = 1. These get multiplied by ModelScale.
+    private const float BaseHeight = 2f;
+    private const float BaseRadius = 0.5f;
+    private const float BaseStepOffset = 0.3f;
+    private const float BaseSkinWidth = 0.08f;
 
     [MenuItem("Tools/Setup Player Character")]
     private static void Setup()
@@ -191,10 +205,28 @@ public static class PlayerCharacterSetup
             GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(model, root.transform);
             instance.name = ModelChildName;
 
-            // Put the model's feet at the bottom of the CharacterController
+            // The root stays at scale 1 so movement, jump height and the camera aren't affected.
+            // Only the model and the colliders change size.
             CharacterController cc = root.GetComponent<CharacterController>();
+            if (cc != null)
+            {
+                cc.height = BaseHeight * ModelScale;
+                cc.radius = BaseRadius * ModelScale;
+                cc.stepOffset = BaseStepOffset * ModelScale;
+                cc.skinWidth = BaseSkinWidth * ModelScale;
+            }
+
+            CapsuleCollider capsule = root.GetComponent<CapsuleCollider>();
+            if (capsule != null)
+            {
+                capsule.height = BaseHeight * ModelScale;
+                capsule.radius = BaseRadius * ModelScale;
+            }
+
+            // Put the model's feet at the bottom of the CharacterController
             float feetY = cc != null ? cc.center.y - cc.height / 2f - cc.skinWidth : -1f;
             instance.transform.SetLocalPositionAndRotation(new Vector3(0, feetY, 0), Quaternion.identity);
+            instance.transform.localScale = Vector3.one * ModelScale;
 
             Animator animator = instance.GetComponent<Animator>();
             if (animator == null) animator = instance.AddComponent<Animator>();
