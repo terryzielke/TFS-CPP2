@@ -5,7 +5,14 @@ public class PlayerController : MonoBehaviour
 {
     //Component references
     private CharacterController cc;
+    private Animator animator;
 
+    // Animator parameter IDs
+    private static readonly int ForwardHash = Animator.StringToHash("Forward");
+    private static readonly int StrafeHash = Animator.StringToHash("Strafe");
+    private static readonly int SpeedHash = Animator.StringToHash("Speed");
+    private static readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
+    private static readonly int JumpHash = Animator.StringToHash("Jump");
 
     [Header("Movement Settings")]
     [SerializeField] private float movementSpeed = 5f;
@@ -13,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float timeToJumpApex = 0.4f;
+    [Header("Animation Settings")]
+    [SerializeField] private float animationDampTime = 0.1f; // smooths blend tree changes
 
     // Calculated values
     private float gravity;
@@ -53,6 +62,9 @@ public class PlayerController : MonoBehaviour
         {
             throw new MissingComponentException("CharacterController component is missing from the GameObject. Please add a CharacterController component to this GameObject.");
         }
+
+        // Animator lives on the character model child; the player still works without one
+        animator = GetComponentInChildren<Animator>();
 
         CalculateJumpVars();
     }
@@ -100,6 +112,21 @@ public class PlayerController : MonoBehaviour
         cc.Move(velocity * Time.fixedDeltaTime);
     }
 
+    private void Update()
+    {
+        UpdateAnimator();
+    }
+
+    void UpdateAnimator()
+    {
+        if (animator == null) return;
+
+        animator.SetFloat(ForwardHash, movementInput.y, animationDampTime, Time.deltaTime);
+        animator.SetFloat(StrafeHash, strafeInput, animationDampTime, Time.deltaTime);
+        animator.SetFloat(SpeedHash, Mathf.Clamp01(new Vector2(strafeInput, movementInput.y).magnitude));
+        animator.SetBool(IsGroundedHash, cc.isGrounded);
+    }
+
     void UpdateCharacterVelocity()
     {
         // A and D rotate player
@@ -120,6 +147,7 @@ public class PlayerController : MonoBehaviour
             if (jumpPressed)
             {
                 velocity.y = initalJumpVelocity;
+                if (animator != null) animator.SetTrigger(JumpHash);
             }
 
             // if player y position is greater than 102 throw exception
