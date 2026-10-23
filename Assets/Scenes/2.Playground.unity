@@ -368,9 +368,9 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 9f82e3bd5d3830640869eacd0daca8a0, type: 2}
-  m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
+  m_TreeDistance: 500
+  m_TreeBillboardDistance: 350
+  m_TreeCrossFadeLength: 100
   m_TreeMaximumFullLODCount: 50
   m_DetailObjectDistance: 500
   m_DetailObjectDensity: 1
@@ -455,7 +455,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 61.19221
+      value: 66.1
       objectReference: {fileID: 0}
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -463,7 +463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 181.6
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -650,7 +650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4180008834501852768, guid: 84c15d41ec485224b9772e3beedeb9e9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 113.3
+      value: 69.2
       objectReference: {fileID: 0}
     - target: {fileID: 4180008834501852768, guid: 84c15d41ec485224b9772e3beedeb9e9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -658,7 +658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4180008834501852768, guid: 84c15d41ec485224b9772e3beedeb9e9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 253.2
+      value: 238.2
       objectReference: {fileID: 0}
     - target: {fileID: 4180008834501852768, guid: 84c15d41ec485224b9772e3beedeb9e9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1092,7 +1092,7 @@ Transform:
   m_GameObject: {fileID: 1355468782}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30, y: 100, z: 250}
+  m_LocalPosition: {x: 30, y: 100, z: 110}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
