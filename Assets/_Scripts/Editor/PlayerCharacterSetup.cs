@@ -85,7 +85,7 @@ public static class PlayerCharacterSetup
     // Collider size at ModelScale = 1. These get multiplied by ModelScale.
     private const float BaseHeight = 2f;
     private const float BaseRadius = 0.5f;
-    private const float BaseStepOffset = 0.3f;
+    private const float BaseStepOffset = 1f;
     private const float BaseSkinWidth = 0.08f;
 
     [MenuItem("Tools/Setup Player Character")]
