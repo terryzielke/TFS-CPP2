@@ -150,50 +150,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &377472044
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 377472046}
-  - component: {fileID: 377472045}
-  m_Layer: 0
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &377472045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377472044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8f7974f24e60144490e1c2b2e24b5d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputManager
---- !u!4 &377472046
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377472044}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 60.8453, y: 1.33418, z: 326.26984}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &384450054
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +283,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1781983125828357419, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 66.1
@@ -368,6 +328,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4438139891757462843, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438139891757462843, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: characterModel
       value: 
       objectReference: {fileID: 919132149155446097, guid: 0cd7653cf3b6d1a4c9815eedbbecc147, type: 3}
@@ -375,6 +339,10 @@ PrefabInstance:
       propertyPath: animatorController
       value: 
       objectReference: {fileID: 9100000, guid: 8533dd2cf80cd0148a50538e8c9bab4d, type: 2}
+    - target: {fileID: 4731637446691164801, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: inputSource
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5029025229859722702, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_Name
       value: Player1
@@ -619,6 +587,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 958937695066308062, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781983125828357419, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781983125828357419, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2078801498014760642, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 72
@@ -660,6 +640,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4438139891757462843, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438139891757462843, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: characterModel
       value: 
       objectReference: {fileID: 919132149155446097, guid: 22ac5eb55b8322a4b8cbf1f4e883160e, type: 3}
@@ -667,9 +651,17 @@ PrefabInstance:
       propertyPath: animatorController
       value: 
       objectReference: {fileID: 9100000, guid: 8533dd2cf80cd0148a50538e8c9bab4d, type: 2}
+    - target: {fileID: 4731637446691164801, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: inputSource
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5029025229859722702, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
       propertyPath: m_Name
       value: Player2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235275429063754497, guid: 4fa8048cb699ad148a5eff64cced059b, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -759,7 +751,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1119228463}
   - {fileID: 481586493}
-  - {fileID: 377472046}
   - {fileID: 2103085962}
   - {fileID: 14596674}
   - {fileID: 384450057}

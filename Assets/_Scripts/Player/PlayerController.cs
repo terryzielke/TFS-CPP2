@@ -1,11 +1,12 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler))]
 public class PlayerController : MonoBehaviour
 {
     //Component references
     private CharacterController cc;
     private Animator animator;
+    private PlayerInputHandler inputHandler;
 
     // Animator parameter IDs
     private static readonly int ForwardHash = Animator.StringToHash("Forward");
@@ -40,23 +41,24 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private bool jumpPressed = false;
 
+    private void Awake()
+    {
+        inputHandler = GetComponent<PlayerInputHandler>();
+    }
 
 
     private void OnEnable()
     {
-        InputManager.Instance.OnMoveEvent += OnMove;
-        InputManager.Instance.OnJumpEvent += OnJump;
-        InputManager.Instance.OnStrafeEvent += OnStrafe;
+        inputHandler.OnMoveEvent += OnMove;
+        inputHandler.OnJumpEvent += OnJump;
+        inputHandler.OnStrafeEvent += OnStrafe;
     }
 
     private void OnDisable()
     {
-        if (InputManager.IsInitialized)
-        {
-            InputManager.Instance.OnMoveEvent -= OnMove;
-            InputManager.Instance.OnJumpEvent -= OnJump;
-            InputManager.Instance.OnStrafeEvent -= OnStrafe;
-        }
+        inputHandler.OnMoveEvent -= OnMove;
+        inputHandler.OnJumpEvent -= OnJump;
+        inputHandler.OnStrafeEvent -= OnStrafe;
     }
 
     private void Start()
