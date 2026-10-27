@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GhostEnemy : MonoBehaviour
 {
+    // Component references
+    private Rigidbody rb;
 
     [Header("Movement Settings")]
     [SerializeField] private float movementSpeed = 1.5f;
@@ -12,17 +14,93 @@ public class GhostEnemy : MonoBehaviour
     [Header("Chase Settings")]
     [SerializeField] private float detectionRadius = 20f;
     [SerializeField] private float loseRadius = 25f; // bigger than detectionRadius so it doesn't flicker at the edge
+    [SerializeField] private float facingAngle = 30f; // degrees either side of forward that count as "facing"
     [Header("Attack Settings")]
     [SerializeField] private float attackRange = 10f;
     [SerializeField] private float attackCooldown = 1.5f;
 
+    private Transform target;
     private bool isSeenByPlayer = false;
     private bool isFacingPlayer = false;
 
-    private void start()
+    private void Start()
     {
-        // Initialize any necessary components or variables here
+        rb = GetComponent<Rigidbody>();
 
+        // Ghosts float, and we steer rotation ourselves
+        rb.useGravity = false;
+        rb.freezeRotation = true;
     }
 
+    private void FixedUpdate()
+    {
+        // (1) Is a player inside the detection radius?
+        target = FindClosestPlayer();
+
+        if (target == null)
+        {
+            isFacingPlayer = false;
+            isSeenByPlayer = false;
+            return;
+        }
+
+        // (2) Is the ghost facing the player?
+        isFacingPlayer = IsFacing(transform, target.position);
+
+        // (4) Is the player facing the ghost?
+        isSeenByPlayer = IsFacing(target, transform.position);
+
+        // (3) Turn toward and move toward the player
+        MoveTowardTarget();
+    }
+
+    // Returns the closest player within detectionRadius, or null if none are close enough
+    private Transform FindClosestPlayer()
+    {
+        Transform closest = null;
+        float closestDistance = detectionRadius;
+
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance <= closestDistance)
+            {
+                closestDistance = distance;
+                closest = player.transform;
+            }
+        }
+
+        return closest;
+    }
+
+    // True if 'looker' is pointing at 'point' within facingAngle (ignores height difference)
+    private bool IsFacing(Transform looker, Vector3 point)
+    {
+        Vector3 toPoint = point - looker.position;
+        toPoint.y = 0f;
+
+        Vector3 forward = looker.forward;
+        forward.y = 0f;
+
+        return Vector3.Angle(forward, toPoint) <= facingAngle;
+    }
+
+    private void MoveTowardTarget()
+    {
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0f; // stay at our own height
+
+        if (direction.sqrMagnitude < 0.001f) return;
+
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, lookRotation, turnSpeed * Time.fixedDeltaTime));
+
+        rb.MovePosition(rb.position + direction.normalized * movementSpeed * Time.fixedDeltaTime);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
 }
