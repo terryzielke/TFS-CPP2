@@ -76,8 +76,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GhostEnemy
   movementSpeed: 1.5
   turnSpeed: 360
-  detectionRadius: 10
-  loseRadius: 15
+  detectionRadius: 20
+  loseRadius: 25
   facingAngle: 30
   attackRange: 10
   attackCooldown: 1.5
@@ -113,7 +113,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 22ac5eb55b8322a4b8cbf1f4e883160e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4843445
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22ac5eb55b8322a4b8cbf1f4e883160e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -121,7 +121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22ac5eb55b8322a4b8cbf1f4e883160e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.3557396
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22ac5eb55b8322a4b8cbf1f4e883160e, type: 3}
       propertyPath: m_LocalRotation.w

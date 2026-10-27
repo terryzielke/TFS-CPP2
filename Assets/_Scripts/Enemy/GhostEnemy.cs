@@ -87,6 +87,7 @@ public class GhostEnemy : MonoBehaviour
 
     private void MoveTowardTarget()
     {
+
         Vector3 direction = target.position - transform.position;
         direction.y = 0f; // stay at our own height
 
@@ -94,6 +95,9 @@ public class GhostEnemy : MonoBehaviour
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, lookRotation, turnSpeed * Time.fixedDeltaTime));
+
+        // if isSeenByPlayer is true, we don't move toward the player, but we still turn to face them
+        if (isSeenByPlayer) return;
 
         rb.MovePosition(rb.position + direction.normalized * movementSpeed * Time.fixedDeltaTime);
     }
