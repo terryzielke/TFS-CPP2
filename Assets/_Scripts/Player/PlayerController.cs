@@ -41,6 +41,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private bool jumpPressed = false;
 
+    // Where the player started, used to respawn them
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
     private void Awake()
     {
         inputHandler = GetComponent<PlayerInputHandler>();
@@ -76,6 +80,32 @@ public class PlayerController : MonoBehaviour
         if (characterModel != null) SpawnCharacterModel();
 
         CalculateJumpVars();
+
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+    }
+
+    // Ghost fireballs have trigger colliders, so a hit shows up here
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("PlayerController.OnTriggerEnter: " + other.gameObject.name);
+        // Spawned fireballs are named "GhostFireBall(Clone)"
+        if (other.gameObject.name.StartsWith("GhostFireBall"))
+        {
+            Debug.Log("Player hit by fireball, resetting to start position.");
+            Destroy(other.gameObject);
+            ResetToStart();
+        }
+    }
+
+    private void ResetToStart()
+    {
+        // The CharacterController overwrites transform changes while enabled, so turn it off to teleport
+        cc.enabled = false;
+        transform.SetPositionAndRotation(startPosition, startRotation);
+        cc.enabled = true;
+
+        velocity = Vector3.zero;
     }
 
     void SpawnCharacterModel()

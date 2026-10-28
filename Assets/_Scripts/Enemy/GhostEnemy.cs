@@ -18,6 +18,10 @@ public class GhostEnemy : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] private float attackRange = 10f;
     [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private GameObject fireBallPrefab;
+    [SerializeField] private Transform firePoint; // leave empty to fire from in front of the ghost
+    [SerializeField] private float fireBallSpeed = 10f;
+    [SerializeField] private float fireBallLifetime = 3f; // seconds before the fireball is destroyed
     [Header("Visibility Settings")]
     [SerializeField] private float fadeSpeed = 2f; // alpha per second
 
@@ -26,6 +30,7 @@ public class GhostEnemy : MonoBehaviour
     private bool isFacingPlayer = false;
     private Renderer[] renderers;
     private float currentAlpha = 1f;
+    private float attackTimer = 0f;
 
     private void Start()
     {
@@ -53,6 +58,39 @@ public class GhostEnemy : MonoBehaviour
                 mat.color = color;
             }
         }
+
+        HandleAttack();
+    }
+
+    // Fires a fireball every attackCooldown seconds while a player is in front of the ghost and in range
+    private void HandleAttack()
+    {
+        attackTimer -= Time.deltaTime;
+
+        bool playerInFront = target != null
+            && isFacingPlayer
+            && Vector3.Distance(transform.position, target.position) <= attackRange;
+
+        if (!playerInFront || attackTimer > 0f) return;
+
+        FireBall();
+        attackTimer = attackCooldown;
+    }
+
+    private void FireBall()
+    {
+        if (fireBallPrefab == null) return;
+
+        Vector3 spawnPosition = firePoint != null ? firePoint.position : transform.position + transform.forward;
+        GameObject fireBall = Instantiate(fireBallPrefab, spawnPosition, transform.rotation);
+
+        // The prefab has no Rigidbody, so add one to move it straight ahead
+        Rigidbody fireBallRb = fireBall.GetComponent<Rigidbody>();
+        if (fireBallRb == null) fireBallRb = fireBall.AddComponent<Rigidbody>();
+        fireBallRb.useGravity = false;
+        fireBallRb.linearVelocity = transform.forward * fireBallSpeed;
+
+        Destroy(fireBall, fireBallLifetime);
     }
 
     private void FixedUpdate()
