@@ -18,10 +18,14 @@ public class GhostEnemy : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] private float attackRange = 10f;
     [SerializeField] private float attackCooldown = 1.5f;
+    [Header("Visibility Settings")]
+    [SerializeField] private float fadeSpeed = 2f; // alpha per second
 
     private Transform target;
     private bool isSeenByPlayer = false;
     private bool isFacingPlayer = false;
+    private Renderer[] renderers;
+    private float currentAlpha = 1f;
 
     private void Start()
     {
@@ -30,6 +34,25 @@ public class GhostEnemy : MonoBehaviour
         // Ghosts float, and we steer rotation ourselves
         rb.useGravity = false;
         rb.freezeRotation = true;
+        // Get all renderers in this object and its children so we can fade them out
+        renderers = GetComponentsInChildren<Renderer>();
+    }
+
+    private void Update()
+    {
+        // Fade out when not facing the player, fade back in when facing them
+        float targetAlpha = isFacingPlayer ? 1f : 0f;
+        currentAlpha = Mathf.MoveTowards(currentAlpha, targetAlpha, fadeSpeed * Time.deltaTime);
+
+        foreach (Renderer r in renderers)
+        {
+            foreach (Material mat in r.materials)
+            {
+                Color color = mat.color; // maps to _BaseColor on URP Lit
+                color.a = currentAlpha;
+                mat.color = color;
+            }
+        }
     }
 
     private void FixedUpdate()
